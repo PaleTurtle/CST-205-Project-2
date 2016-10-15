@@ -11,7 +11,9 @@ GitHub link: https://github.com/PaleTurtle/CST-205-Project-2
 """
 
 import sys
+#import the subprocess for oprations with FFmpeg and the command line
 import subprocess
+#import the file path in order to change the file name number
 import os.path as pt
 import pyscreenshot as ImageGrab
 from PyQt5.QtWidgets import (QWidget,QMainWindow,QAction,QApplication,qApp,QHBoxLayout,
@@ -70,11 +72,15 @@ class Window(QMainWindow):
         
     #Record click
     def rClick(self):
+        #filename is created:
+        #create filename string and a filenumber
         filename="newfile"
         counter=0
         time=20
+        #create a file number
         filenumber=1
-
+        #got some help from stackoverflow: https://stackoverflow.com/questions/17984809/how-do-i-create-an-incrementing-filename-in-python
+        #as long as the filename in combination with the filenumber alreadz exists, the filenumber is increased
         while(pt.exists(filename+str(filenumber)+".mp4")):
             filenumber+=1
 
@@ -89,6 +95,7 @@ class Window(QMainWindow):
 
         subprocess.call('ffmpeg -framerate 1/5 -f image2 -i screenshot%03d.png -c:v libx264 -vf fps=1 fvideo.ts', shell="TRUE")
         
+        #got some help from stackoverflow:https://stackoverflow.com/questions/7656308/python-ffmpeg-command-line-issues
         def callCommand(command):
             #open the command in the subprocess and split it into the parts that should be executed
             subprocess.Popen(command.split(' '))
@@ -96,6 +103,15 @@ class Window(QMainWindow):
         #use the command for the FFmpeg function
         callCommand('ffmpeg -f alsa -ac 2 -ar 44100 -ss 00:00:00 -t 20 -i hw:0,1 project2finaltest.mp3')
         callCommand('ffmpeg -i fvideo.ts -i project2finaltest.mp3 -c:v copy -c:a copy {}{}.mp4'.format(filename,filenumber))
+        #'ffmpeg: execute FFmpeg
+            #-f alsa:format of capturing is ALSA
+            #-ac 2:2 audio channels: stereo recording
+            #-ar 44100: audio rate: 44100 Hz (usual rate for audio recording) 
+            #-ss 00:00:00: start from the beginning
+            #-t {}: record for the time the user entered
+            #-i: input: all the stuff from before is used as input
+            #hw:0,1: select channel for microphone
+            #{}{}.mp3': filename string and filenumber are used for the output file
 
 if __name__ == '__main__':
 
