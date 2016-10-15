@@ -12,6 +12,7 @@ GitHub link: https://github.com/PaleTurtle/CST-205-Project-2
 
 import sys
 import subprocess
+import os.path as pt
 import pyscreenshot as ImageGrab
 from PyQt5.QtWidgets import (QWidget,QMainWindow,QAction,QApplication,qApp,QHBoxLayout,
                              QVBoxLayout,QPushButton)
@@ -72,6 +73,10 @@ class Window(QMainWindow):
         filename="newfile"
         counter=0
         time=20
+        filenumber=1
+
+        while(pt.exists(filename+str(filenumber)+".mp4")):
+            filenumber+=1
 
         for x in range(1,10):
                 counter = counter + 1   
@@ -90,7 +95,7 @@ class Window(QMainWindow):
 
         #use the command for the FFmpeg function
         callCommand('ffmpeg -f alsa -ac 2 -ar 44100 -ss 00:00:00 -t 20 -i hw:0,1 project2finaltest.mp3')
-        callCommand('ffmpeg -i fvideo.ts -i project2finaltest.mp3 -c:v copy -c:a copy finalprojecttestrun.mp4')
+        callCommand('ffmpeg -i fvideo.ts -i project2finaltest.mp3 -c:v copy -c:a copy {}{}.mp4'.format(filename,filenumber))
 
 if __name__ == '__main__':
 
