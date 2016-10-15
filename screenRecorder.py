@@ -108,10 +108,12 @@ class Window(QMainWindow):
             #-ac 2:2 audio channels: stereo recording
             #-ar 44100: audio rate: 44100 Hz (usual rate for audio recording) 
             #-ss 00:00:00: start from the beginning
-            #-t {}: record for the time the user entered
+            #-t: record for 20 seconds
             #-i: input: all the stuff from before is used as input
             #hw:0,1: select channel for microphone
             #{}{}.mp3': filename string and filenumber are used for the output file
+            #.format(filename,filenumber)):filename and filenumber are used to fill the gaps in command
+            
 
 if __name__ == '__main__':
 
